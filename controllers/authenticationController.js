@@ -15,6 +15,7 @@ exports.login_post = passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/fail',
 });
+
 exports.register_get = (req, res) => {
   res.render('./views/register');
 };
