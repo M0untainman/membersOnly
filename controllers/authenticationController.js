@@ -1,4 +1,4 @@
-Member = require('../models/member');
+Members = require('../models/member');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
@@ -22,7 +22,7 @@ exports.register_get = (req, res) => {
 
 exports.register_post = (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
-    const member = new Member({
+    const Members = new member({
       email: req.body.email,
       password: hashedPassword,
       name: req.body.name,

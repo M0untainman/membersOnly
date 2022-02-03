@@ -5,7 +5,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
-const Member = require('./models/member');
+const Members = require('./models/member');
 
 // boiler plate for connecting to a database
 const mongoose = require('mongoose');
@@ -34,13 +34,14 @@ app.use(express.urlencoded({ extended: false }));
 // passport authentication setup fucntion 1,2 and 3
 passport.use(
   new LocalStrategy((email, password, done) => {
-    Member.findOne({ email: email }, (err, Member) => {
+    member.findOne({ email: email }, (err, member) => {
       if (err) return done(err);
-      if (!Member) return done(null, false, { message: 'Incorrect email' });
-      bcrypt.compare(password, Member.password, (err, res) => {
+      if (!member) return done(null, false, { message: 'Incorrect email' });
+      bcrypt.compare(password, member.password, (err, res) => {
+        console.log('comparing');
         if (err) return done(err);
         // Passwords match, log Member in!
-        if (res) return done(null, Member);
+        if (res) return done(null, member);
         // Passwords do not match!
         else return done(null, false, { message: 'Incorrect password' });
       });
@@ -48,9 +49,9 @@ passport.use(
   })
 );
 
-passport.serializeUser((Member, done) => done(null, Member.id));
+passport.serializeUser((member, done) => done(null, member.id));
 passport.deserializeUser((id, done) =>
-  Member.findById(id, (err, Member) => done(err, Member))
+  member.findById(id, (err, member) => done(err, member))
 );
 
 // Access the user object from anywhere in our application
