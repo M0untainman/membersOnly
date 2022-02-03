@@ -35,11 +35,11 @@ app.use(express.urlencoded({ extended: false }));
 passport.use(
   new LocalStrategy((email, password, done) => {
     Members.findOne({ email: email }, (err, member) => {
-      console.log(member);
+      console.log('LOCAL STRATEGY', {member});
       if (err) return done(err);
       if (!member) return done(null, false, { message: 'Incorrect email' });
       bcrypt.compare(password, member.password, (err, res) => {
-        console.log('comparing');
+        console.log('bcrypt comparing', (JSON.stringify({res, err}, null, 2)));
         if (err) return done(err);
         // Passwords match, log Member in!
         if (res) return done(null, member);
@@ -50,7 +50,10 @@ passport.use(
   })
 );
 
-passport.serializeUser((member, done) => done(null, member.id));
+passport.serializeUser((member, done) => {
+  console.log('SERIALIZE USER', {member});
+  done(null, member.id)
+});
 passport.deserializeUser((id, done) =>
   Members.findById(id, (err, member) => done(err, member))
 );
