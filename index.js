@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: false }));
 // passport authentication setup fucntion 1,2 and 3
 passport.use(
   new LocalStrategy((email, password, done) => {
-    member.findOne({ email: email }, (err, member) => {
+    Members.findOne({ email: email }, (err, member) => {
       console.log(member);
       if (err) return done(err);
       if (!member) return done(null, false, { message: 'Incorrect email' });
@@ -52,7 +52,7 @@ passport.use(
 
 passport.serializeUser((member, done) => done(null, member.id));
 passport.deserializeUser((id, done) =>
-  member.findById(id, (err, member) => done(err, member))
+  Members.findById(id, (err, member) => done(err, member))
 );
 
 // Access the user object from anywhere in our application
