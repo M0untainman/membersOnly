@@ -34,12 +34,12 @@ app.use(express.urlencoded({ extended: false }));
 // passport authentication setup fucntion 1,2 and 3
 passport.use(
   new LocalStrategy((email, password, done) => {
-    member.findOne({ email: email }, (err, member) => {
-      console.log(member);
+    Members.findOne({ email: email }, (err, member) => {
+      console.log('LOCAL STRATEGY', {member});
       if (err) return done(err);
       if (!member) return done(null, false, { message: 'Incorrect email' });
       bcrypt.compare(password, member.password, (err, res) => {
-        console.log('comparing');
+        console.log('bcrypt comparing', (JSON.stringify({res, err}, null, 2)));
         if (err) return done(err);
         // Passwords match, log Member in!
         if (res) return done(null, member);
@@ -50,9 +50,12 @@ passport.use(
   })
 );
 
-passport.serializeUser((member, done) => done(null, member.id));
+passport.serializeUser((member, done) => {
+  console.log('SERIALIZE USER', {member});
+  done(null, member.id)
+});
 passport.deserializeUser((id, done) =>
-  member.findById(id, (err, member) => done(err, member))
+  Members.findById(id, (err, member) => done(err, member))
 );
 
 // Access the user object from anywhere in our application
