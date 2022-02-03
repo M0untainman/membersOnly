@@ -35,6 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 passport.use(
   new LocalStrategy((email, password, done) => {
     member.findOne({ email: email }, (err, member) => {
+      console.log(member);
       if (err) return done(err);
       if (!member) return done(null, false, { message: 'Incorrect email' });
       bcrypt.compare(password, member.password, (err, res) => {
