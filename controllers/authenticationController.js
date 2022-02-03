@@ -11,10 +11,13 @@ exports.logout = (req, res) => {
   res.redirect('/');
 };
 
-exports.login_post = passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/fail',
-});
+exports.login_post = () => {
+  console.log('in post'),
+    passport.authenticate('local', {
+      successRedirect: '/',
+      failureRedirect: '/fail',
+    });
+};
 
 exports.register_get = (req, res) => {
   res.render('./views/register');
