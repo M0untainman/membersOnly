@@ -10,9 +10,8 @@ router.get('/', homepageController.homepage);
 router.get('/log-in', authenticationController.login);
 
 // --------------------------------------log in post route
-router.post('/log-in', () => {
-  console.log('calling post'), authenticationController.login_post;
-});
+router.post('/log-in', authenticationController.login_post);
+//router.post('/log-in', authenticationController.login_post, (req, res) => {res.status(200).send('logged in!');});
 
 // -------------------------------------- log out route
 router.get('/log-out', authenticationController.logout);

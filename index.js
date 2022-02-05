@@ -9,7 +9,7 @@ const Members = require('./models/member');
 
 // boiler plate for connecting to a database
 const mongoose = require('mongoose');
-const mongoDb = process.env.mongoconnection;
+const mongoDb = process.env.mongoconnection || 'mongodb://localhost:27017/test';
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongo connection error'));
@@ -54,9 +54,10 @@ passport.serializeUser((member, done) => {
   console.log('SERIALIZE USER', {member});
   done(null, member.id)
 });
-passport.deserializeUser((id, done) =>
-  Members.findById(id, (err, member) => done(err, member))
-);
+passport.deserializeUser((id, done) => {
+  console.log('DESERIALIZE USER', id);
+  done(null, Members.findById(id, (err, member) => done(err, member)))
+});
 
 // Access the user object from anywhere in our application
 app.use((req, res, next) => {
