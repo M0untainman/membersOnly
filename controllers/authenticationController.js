@@ -14,7 +14,7 @@ exports.logout = (req, res) => {
 exports.login_post = passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/fail',
-  failureMessage: true
+  failureMessage: true,
   // failureFlash: true
 });
 
@@ -47,6 +47,7 @@ exports.register_get = (req, res) => {
 exports.register_post = (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
     const member = new Members({
+      username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
       name: req.body.name,
