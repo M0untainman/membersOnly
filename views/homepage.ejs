@@ -9,11 +9,13 @@
     <% if (member) {%>
     <h1>WELCOME BACK <%= member.name %></h1>
     <a href="/log-out">LOG OUT</a>
+    <a href="/createMsg">create a new message</a>
     <% } else { %>
     <h1>please log in</h1>
-    <%}%>
     <a href="/register">register new member</a>
     <a href="/log-in">log in</a>
+    <%}%>
+
     <h1>Messages will go here</h1>
   </body>
 </html>
